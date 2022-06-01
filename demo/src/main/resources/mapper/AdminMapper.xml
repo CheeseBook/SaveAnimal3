@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.AdminMapper" >
+  <resultMap id="adminMap" type="com.example.demo.domain.Admin" >
+    <id column="admin_id" property="adminId" jdbcType="INTEGER" />
+    <result column="admin_username" property="adminUsername" jdbcType="VARCHAR" />
+    <result column="admin_password" property="adminPassword" jdbcType="VARCHAR" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+    <result column="admin_sex" property="adminSex" jdbcType="VARCHAR" />
+    <result column="admin_age" property="adminAge" jdbcType="INTEGER" />
+    <result column="admin_tele" property="adminTele" jdbcType="VARCHAR" />
+    <result column="admin_email" property="adminEmail" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="allAdmin">
+    admin_id, admin_username, admin_password, admin_name, admin_sex, admin_age, admin_tele, admin_email
+  </sql>
+
+  <sql id="baseAdmin">
+    admin_username, admin_password, admin_name, admin_sex, admin_age, admin_tele, admin_email
+  </sql>
+
+  <select id="loginAdmin" parameterType="Admin" resultMap="adminMap">
+    select <include refid="allAdmin"/> from t_admin
+    where admin_username=#{adminUsername} and admin_password=#{adminPassword}
+  </select>
+
+  <select id="getAdmins" resultMap="adminMap">
+    SELECT <include refid="allAdmin"/> from t_admin
+  </select>
+
+  <select id="findById" resultMap="adminMap" parameterType="int">
+    select <include refid="baseAdmin"/> from t_admin
+    where admin_id=#{id}
+  </select>
+
+  <insert id="addAdmin" parameterType="Admin">
+    INSERT INTO t_admin (<include refid="baseAdmin"/>) VALUES
+    (#{adminUsername},#{adminPassword},#{adminName},#{adminSex},#{adminAge},#{adminTele},#{adminEmail})
+  </insert>
+
+  <update id="updateAdmin" parameterType="Admin">
+    UPDATE t_admin SET
+                     admin_username=#{adminUsername}, admin_password=#{adminPassword}, admin_name=#{adminName},
+                     admin_sex=#{adminSex}, admin_age=#{adminAge}, admin_tele=#{adminTele}, admin_email=#{adminEmail}
+    where admin_id=#{adminId}
+  </update>
+
+  <delete id="deleteAdmin" parameterType="int">
+    DELETE FROM t_admin WHERE admin_id=#{id}
+  </delete>
+
+  <select id="findByName" resultMap="adminMap" parameterType="string">
+    SELECT <include refid="allAdmin"/> from t_admin
+    where admin_username like concat("%", #{adminUsername}, "%")
+  </select>
+</mapper>

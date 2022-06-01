@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Apply" >
+    <id column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <id column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="applicant_name" property="applicantName" jdbcType="VARCHAR" />
+    <result column="applicant_tele" property="applicantTele" jdbcType="VARCHAR" />
+    <result column="applicant_reason" property="applicantReason" jdbcType="VARCHAR" />
+    <result column="apply_state" property="applyState" jdbcType="VARCHAR" />
+    <result column="feedback" property="feedback" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    apply_id, activity_id, applicant_name, applicant_tele, applicant_reason, apply_state, 
+    feedback
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.example.demo.domain.ApplyKey" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_apply
+    where apply_id = #{applyId,jdbcType=INTEGER}
+      and activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.example.demo.domain.ApplyKey" >
+    delete from t_apply
+    where apply_id = #{applyId,jdbcType=INTEGER}
+      and activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Apply" >
+    insert into t_apply (apply_id, activity_id, applicant_name, 
+      applicant_tele, applicant_reason, apply_state, 
+      feedback)
+    values (#{applyId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{applicantName,jdbcType=VARCHAR}, 
+      #{applicantTele,jdbcType=VARCHAR}, #{applicantReason,jdbcType=VARCHAR}, #{applyState,jdbcType=VARCHAR}, 
+      #{feedback,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Apply" >
+    insert into t_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="applyId != null" >
+        apply_id,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="applicantName != null" >
+        applicant_name,
+      </if>
+      <if test="applicantTele != null" >
+        applicant_tele,
+      </if>
+      <if test="applicantReason != null" >
+        applicant_reason,
+      </if>
+      <if test="applyState != null" >
+        apply_state,
+      </if>
+      <if test="feedback != null" >
+        feedback,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="applyId != null" >
+        #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="applicantName != null" >
+        #{applicantName,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantTele != null" >
+        #{applicantTele,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantReason != null" >
+        #{applicantReason,jdbcType=VARCHAR},
+      </if>
+      <if test="applyState != null" >
+        #{applyState,jdbcType=VARCHAR},
+      </if>
+      <if test="feedback != null" >
+        #{feedback,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Apply" >
+    update t_apply
+    <set >
+      <if test="applicantName != null" >
+        applicant_name = #{applicantName,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantTele != null" >
+        applicant_tele = #{applicantTele,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantReason != null" >
+        applicant_reason = #{applicantReason,jdbcType=VARCHAR},
+      </if>
+      <if test="applyState != null" >
+        apply_state = #{applyState,jdbcType=VARCHAR},
+      </if>
+      <if test="feedback != null" >
+        feedback = #{feedback,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where apply_id = #{applyId,jdbcType=INTEGER}
+      and activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Apply" >
+    update t_apply
+    set applicant_name = #{applicantName,jdbcType=VARCHAR},
+      applicant_tele = #{applicantTele,jdbcType=VARCHAR},
+      applicant_reason = #{applicantReason,jdbcType=VARCHAR},
+      apply_state = #{applyState,jdbcType=VARCHAR},
+      feedback = #{feedback,jdbcType=VARCHAR}
+    where apply_id = #{applyId,jdbcType=INTEGER}
+      and activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+</mapper>

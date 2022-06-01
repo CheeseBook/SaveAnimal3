@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ArticleMapper" >
+  <resultMap id="articleMap" type="com.example.demo.domain.Article" >
+    <id column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="article_title" property="articleTitle" jdbcType="VARCHAR" />
+    <result column="article_view" property="articleView" jdbcType="VARCHAR" />
+    <result column="article_view_times" property="articleViewTimes" jdbcType="INTEGER" />
+    <result column="article_time" property="articleTime" jdbcType="TIMESTAMP" />
+    <result column="article_content" property="articleContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <sql id="allArticle">
+    article_id, article_title, article_content, article_view, article_view_times, article_time
+  </sql>
+
+  <sql id="baseArticle">
+    article_id, article_title, article_view, article_view_times, article_time
+  </sql>
+
+  <select id="getAllNum" resultType="int">
+    select count(*) from t_article
+  </select>
+
+  <select id="getAllBaseArticlesByTime" resultMap="articleMap">
+    select <include refid="baseArticle"/> from t_article
+    order by article_time desc
+  </select>
+
+  <select id="getAllBaseArticlesByViewTimes" resultMap="articleMap">
+    select <include refid="baseArticle"/> from t_article
+    order by article_view_times desc
+  </select>
+
+  <select id="getArticleById" resultMap="articleMap">
+    select <include refid="allArticle"/> from t_article
+    where article_id = #{id}
+  </select>
+
+  <select id="findByTitle" resultMap="articleMap">
+    select <include refid="baseArticle"/> from t_article
+    where article_title like concat("%",#{articleTitle},"%")
+  </select>
+
+  <update id="upViewTimes" parameterType="int">
+    update t_article set article_view_times = article_view_times + 1
+    where article_id = #{id}
+  </update>
+
+  <update id="updateArticle" parameterType="Article">
+    update t_article set
+                       article_title = #{articleTitle}, article_content = #{articleContent}
+    where article_id = #{articleId}
+  </update>
+
+  <insert id="addArticle" parameterType="Article">
+    insert into t_article(article_title, article_content, article_view, article_time)
+    values (#{articleTitle}, #{articleContent}, #{articleView}, #{articleTime})
+  </insert>
+
+  <delete id="delArticle" parameterType="int">
+    delete from t_article
+    where article_id = #{id}
+  </delete>
+</mapper>

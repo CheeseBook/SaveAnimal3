@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.RescueMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Rescue" >
+    <id column="rescue_id" property="rescueId" jdbcType="INTEGER" />
+    <result column="rescuer_name" property="rescuerName" jdbcType="VARCHAR" />
+    <result column="rescuer_tele" property="rescuerTele" jdbcType="VARCHAR" />
+    <result column="rescue_time" property="rescueTime" jdbcType="TIMESTAMP" />
+    <result column="rescue_address" property="rescueAddress" jdbcType="VARCHAR" />
+    <result column="animal_family" property="animalFamily" jdbcType="VARCHAR" />
+    <result column="animal_describe" property="animalDescribe" jdbcType="VARCHAR" />
+    <result column="animal_picture" property="animalPicture" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    rescue_id, rescuer_name, rescuer_tele, rescue_time, rescue_address, animal_family, 
+    animal_describe, animal_picture
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_rescue
+    where rescue_id = #{rescueId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_rescue
+    where rescue_id = #{rescueId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Rescue" >
+    insert into t_rescue (rescue_id, rescuer_name, rescuer_tele, 
+      rescue_time, rescue_address, animal_family, 
+      animal_describe, animal_picture)
+    values (#{rescueId,jdbcType=INTEGER}, #{rescuerName,jdbcType=VARCHAR}, #{rescuerTele,jdbcType=VARCHAR}, 
+      #{rescueTime,jdbcType=TIMESTAMP}, #{rescueAddress,jdbcType=VARCHAR}, #{animalFamily,jdbcType=VARCHAR}, 
+      #{animalDescribe,jdbcType=VARCHAR}, #{animalPicture,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Rescue" >
+    insert into t_rescue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rescueId != null" >
+        rescue_id,
+      </if>
+      <if test="rescuerName != null" >
+        rescuer_name,
+      </if>
+      <if test="rescuerTele != null" >
+        rescuer_tele,
+      </if>
+      <if test="rescueTime != null" >
+        rescue_time,
+      </if>
+      <if test="rescueAddress != null" >
+        rescue_address,
+      </if>
+      <if test="animalFamily != null" >
+        animal_family,
+      </if>
+      <if test="animalDescribe != null" >
+        animal_describe,
+      </if>
+      <if test="animalPicture != null" >
+        animal_picture,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rescueId != null" >
+        #{rescueId,jdbcType=INTEGER},
+      </if>
+      <if test="rescuerName != null" >
+        #{rescuerName,jdbcType=VARCHAR},
+      </if>
+      <if test="rescuerTele != null" >
+        #{rescuerTele,jdbcType=VARCHAR},
+      </if>
+      <if test="rescueTime != null" >
+        #{rescueTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rescueAddress != null" >
+        #{rescueAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="animalFamily != null" >
+        #{animalFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="animalDescribe != null" >
+        #{animalDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="animalPicture != null" >
+        #{animalPicture,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Rescue" >
+    update t_rescue
+    <set >
+      <if test="rescuerName != null" >
+        rescuer_name = #{rescuerName,jdbcType=VARCHAR},
+      </if>
+      <if test="rescuerTele != null" >
+        rescuer_tele = #{rescuerTele,jdbcType=VARCHAR},
+      </if>
+      <if test="rescueTime != null" >
+        rescue_time = #{rescueTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rescueAddress != null" >
+        rescue_address = #{rescueAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="animalFamily != null" >
+        animal_family = #{animalFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="animalDescribe != null" >
+        animal_describe = #{animalDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="animalPicture != null" >
+        animal_picture = #{animalPicture,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rescue_id = #{rescueId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Rescue" >
+    update t_rescue
+    set rescuer_name = #{rescuerName,jdbcType=VARCHAR},
+      rescuer_tele = #{rescuerTele,jdbcType=VARCHAR},
+      rescue_time = #{rescueTime,jdbcType=TIMESTAMP},
+      rescue_address = #{rescueAddress,jdbcType=VARCHAR},
+      animal_family = #{animalFamily,jdbcType=VARCHAR},
+      animal_describe = #{animalDescribe,jdbcType=VARCHAR},
+      animal_picture = #{animalPicture,jdbcType=VARCHAR}
+    where rescue_id = #{rescueId,jdbcType=INTEGER}
+  </update>
+</mapper>

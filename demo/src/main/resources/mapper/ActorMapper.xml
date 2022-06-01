@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ActorMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Actor" >
+    <id column="actor_id" property="actorId" jdbcType="INTEGER" />
+    <id column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="actor_name" property="actorName" jdbcType="VARCHAR" />
+    <result column="actor_tele" property="actorTele" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    actor_id, activity_id, actor_name, actor_tele, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.example.demo.domain.ActorKey" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_actor
+    where actor_id = #{actorId,jdbcType=INTEGER}
+      and activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.example.demo.domain.ActorKey" >
+    delete from t_actor
+    where actor_id = #{actorId,jdbcType=INTEGER}
+      and activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Actor" >
+    insert into t_actor (actor_id, activity_id, actor_name, 
+      actor_tele, remark)
+    values (#{actorId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{actorName,jdbcType=VARCHAR}, 
+      #{actorTele,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Actor" >
+    insert into t_actor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actorId != null" >
+        actor_id,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="actorName != null" >
+        actor_name,
+      </if>
+      <if test="actorTele != null" >
+        actor_tele,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actorId != null" >
+        #{actorId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="actorName != null" >
+        #{actorName,jdbcType=VARCHAR},
+      </if>
+      <if test="actorTele != null" >
+        #{actorTele,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Actor" >
+    update t_actor
+    <set >
+      <if test="actorName != null" >
+        actor_name = #{actorName,jdbcType=VARCHAR},
+      </if>
+      <if test="actorTele != null" >
+        actor_tele = #{actorTele,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where actor_id = #{actorId,jdbcType=INTEGER}
+      and activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Actor" >
+    update t_actor
+    set actor_name = #{actorName,jdbcType=VARCHAR},
+      actor_tele = #{actorTele,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where actor_id = #{actorId,jdbcType=INTEGER}
+      and activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+</mapper>

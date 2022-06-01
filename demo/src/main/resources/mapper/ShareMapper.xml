@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ShareMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Share" >
+    <id column="share_id" property="shareId" jdbcType="INTEGER" />
+    <result column="adopter_id" property="adopterId" jdbcType="INTEGER" />
+    <result column="share_time" property="shareTime" jdbcType="TIMESTAMP" />
+    <result column="share_type" property="shareType" jdbcType="VARCHAR" />
+    <result column="share_content" property="shareContent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    share_id, adopter_id, share_time, share_type, share_content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_share
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_share
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Share" >
+    insert into t_share (share_id, adopter_id, share_time, 
+      share_type, share_content)
+    values (#{shareId,jdbcType=INTEGER}, #{adopterId,jdbcType=INTEGER}, #{shareTime,jdbcType=TIMESTAMP}, 
+      #{shareType,jdbcType=VARCHAR}, #{shareContent,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Share" >
+    insert into t_share
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="shareId != null" >
+        share_id,
+      </if>
+      <if test="adopterId != null" >
+        adopter_id,
+      </if>
+      <if test="shareTime != null" >
+        share_time,
+      </if>
+      <if test="shareType != null" >
+        share_type,
+      </if>
+      <if test="shareContent != null" >
+        share_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="shareId != null" >
+        #{shareId,jdbcType=INTEGER},
+      </if>
+      <if test="adopterId != null" >
+        #{adopterId,jdbcType=INTEGER},
+      </if>
+      <if test="shareTime != null" >
+        #{shareTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shareType != null" >
+        #{shareType,jdbcType=VARCHAR},
+      </if>
+      <if test="shareContent != null" >
+        #{shareContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Share" >
+    update t_share
+    <set >
+      <if test="adopterId != null" >
+        adopter_id = #{adopterId,jdbcType=INTEGER},
+      </if>
+      <if test="shareTime != null" >
+        share_time = #{shareTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shareType != null" >
+        share_type = #{shareType,jdbcType=VARCHAR},
+      </if>
+      <if test="shareContent != null" >
+        share_content = #{shareContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Share" >
+    update t_share
+    set adopter_id = #{adopterId,jdbcType=INTEGER},
+      share_time = #{shareTime,jdbcType=TIMESTAMP},
+      share_type = #{shareType,jdbcType=VARCHAR},
+      share_content = #{shareContent,jdbcType=VARCHAR}
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </update>
+</mapper>

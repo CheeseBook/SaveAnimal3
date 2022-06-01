@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.AnimalMapper" >
+  <resultMap id="animalMap" type="com.example.demo.domain.Animal" >
+    <id column="animal_id" property="animalId" jdbcType="INTEGER" />
+    <result column="animal_family" property="animalFamily" jdbcType="VARCHAR" />
+    <result column="animal_breed" property="animalBreed" jdbcType="VARCHAR" />
+    <result column="animal_name" property="animalName" jdbcType="VARCHAR" />
+    <result column="animal_sex" property="animalSex" jdbcType="VARCHAR" />
+    <result column="animal_age" property="animalAge" jdbcType="VARCHAR" />
+    <result column="adopt_status" property="adoptStatus" jdbcType="VARCHAR" />
+    <result column="health_status" property="healthStatus" jdbcType="VARCHAR" />
+    <result column="input_time" property="inputTime" jdbcType="TIMESTAMP" />
+    <result column="animal_pic" property="animalPic" jdbcType="VARCHAR" />
+    <result column="animal_details" property="animalDetails" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="allAnimal">
+    animal_id, animal_family, animal_breed, animal_name, animal_sex, animal_age, adopt_status, health_status, input_time,
+        animal_pic, animal_details
+  </sql>
+
+  <sql id="baseAnimal">
+    animal_id, animal_breed, animal_name, animal_sex, animal_age, adopt_status, animal_pic
+  </sql>
+
+  <sql id="certainConditions">
+    <where>
+      <if test=" adoptStatus != null and adoptStatus != '' ">
+        and adopt_status = #{adoptStatus}
+      </if>
+      <if test=" animalFamily != null and animalFamily != '' ">
+        <if test=" animalFamily != '其他' ">
+          and animal_family = #{animalFamily}
+        </if>
+        <if test=" animalFamily == '其他' ">
+          and animal_family not in ('猫', '狗')
+        </if>
+      </if>
+      <if test=" animalSex != null and animalSex != '' ">
+        and animal_sex = #{animalSex}
+      </if>
+      <if test=" animalAge != null and animalAge != '' ">
+        <if test=" animalAge == '0.00-0.06' ">
+          and animal_age between 0.00 and 0.06
+        </if>
+        <if test=" animalAge == '0.06-2.00' ">
+          and animal_age between 0.06 and 2.00
+        </if>
+        <if test=" animalAge == '2.00-8.00' ">
+          and animal_age between 2.00 and 8.00
+        </if>
+        <if test=" animalAge == '8.00' ">
+          and animal_age > 8.00
+        </if>
+      </if>
+    </where>
+  </sql>
+
+  <select id="getPageNumByCertainConditions" parameterType="Animal" resultType="int">
+    select count(*) from t_animal
+    <include refid="certainConditions"/>
+  </select>
+
+  <select id="getAnimalByCertainConditions" parameterType="Animal" resultMap="animalMap">
+    select <include refid="baseAnimal"/> from t_animal
+    <include refid="certainConditions"/> order by input_time desc
+  </select>
+
+  <select id="findById" parameterType="int" resultMap="animalMap">
+    select <include refid="allAnimal"/> from t_animal
+    where animal_id = #{animalId}
+  </select>
+
+  <select id="findAllByTime" resultMap="animalMap">
+    select <include refid="allAnimal"/> from t_animal
+    order by input_time desc
+  </select>
+
+  <select id="findByFamily" parameterType="String" resultMap="animalMap">
+    select <include refid="allAnimal"/> from t_animal
+    <where>
+      <if test=" animalFamily != null and animalFamily != '' ">
+        <if test=" animalFamily == '其他' ">
+          and animal_family not in ('猫', '狗')
+        </if>
+        <if test=" animalFamily != '其他' ">
+          and animal_family = #{animalFamily}
+        </if>
+      </if>
+    </where>
+    order by input_time desc
+  </select>
+
+  <insert id="addAnimal" parameterType="Animal">
+    insert into t_animal(animal_family, animal_breed, animal_name, animal_sex, animal_age, adopt_status, health_status, input_time,
+                         animal_pic, animal_details) values
+      (#{animalFamily}, #{animalBreed}, #{animalName}, #{animalSex}, #{animalAge}, #{adoptStatus}, #{healthStatus}, #{inputTime},
+       #{animalPic}, #{animalDetails})
+  </insert>
+
+  <delete id="delAnimalById" parameterType="int">
+    delete from t_animal where animal_id = #{id}
+  </delete>
+
+  <update id="updateAnimal" parameterType="Animal">
+    update t_animal set animal_family = #{animalFamily}, animal_breed = #{animalBreed},
+    animal_name = #{animalName}, animal_sex = #{animalSex}, animal_age = #{animalAge},
+    adopt_status = #{adoptStatus}, health_status = #{healthStatus},
+    <if test=" animalPic != '' and animalPic != null">
+      animal_pic = #{animalPic},
+    </if>
+    animal_details = #{animalDetails}
+    where animal_id = #{animalId}
+  </update>
+</mapper>

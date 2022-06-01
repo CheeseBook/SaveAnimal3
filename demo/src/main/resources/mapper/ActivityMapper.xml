@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Activity" >
+    <id column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="activity_name" property="activityName" jdbcType="VARCHAR" />
+    <result column="activity_begin" property="activityBegin" jdbcType="TIMESTAMP" />
+    <result column="activity_end" property="activityEnd" jdbcType="TIMESTAMP" />
+    <result column="activity_address" property="activityAddress" jdbcType="VARCHAR" />
+    <result column="activity_describe" property="activityDescribe" jdbcType="VARCHAR" />
+    <result column="actor_num" property="actorNum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    activity_id, activity_name, activity_begin, activity_end, activity_address, activity_describe, 
+    actor_num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Activity" >
+    insert into t_activity (activity_id, activity_name, activity_begin, 
+      activity_end, activity_address, activity_describe, 
+      actor_num)
+    values (#{activityId,jdbcType=INTEGER}, #{activityName,jdbcType=VARCHAR}, #{activityBegin,jdbcType=TIMESTAMP}, 
+      #{activityEnd,jdbcType=TIMESTAMP}, #{activityAddress,jdbcType=VARCHAR}, #{activityDescribe,jdbcType=VARCHAR}, 
+      #{actorNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Activity" >
+    insert into t_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="activityName != null" >
+        activity_name,
+      </if>
+      <if test="activityBegin != null" >
+        activity_begin,
+      </if>
+      <if test="activityEnd != null" >
+        activity_end,
+      </if>
+      <if test="activityAddress != null" >
+        activity_address,
+      </if>
+      <if test="activityDescribe != null" >
+        activity_describe,
+      </if>
+      <if test="actorNum != null" >
+        actor_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="activityName != null" >
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityBegin != null" >
+        #{activityBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEnd != null" >
+        #{activityEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityAddress != null" >
+        #{activityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="activityDescribe != null" >
+        #{activityDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="actorNum != null" >
+        #{actorNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Activity" >
+    update t_activity
+    <set >
+      <if test="activityName != null" >
+        activity_name = #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityBegin != null" >
+        activity_begin = #{activityBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEnd != null" >
+        activity_end = #{activityEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityAddress != null" >
+        activity_address = #{activityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="activityDescribe != null" >
+        activity_describe = #{activityDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="actorNum != null" >
+        actor_num = #{actorNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Activity" >
+    update t_activity
+    set activity_name = #{activityName,jdbcType=VARCHAR},
+      activity_begin = #{activityBegin,jdbcType=TIMESTAMP},
+      activity_end = #{activityEnd,jdbcType=TIMESTAMP},
+      activity_address = #{activityAddress,jdbcType=VARCHAR},
+      activity_describe = #{activityDescribe,jdbcType=VARCHAR},
+      actor_num = #{actorNum,jdbcType=INTEGER}
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+</mapper>

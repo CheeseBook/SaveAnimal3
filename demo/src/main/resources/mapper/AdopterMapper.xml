@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.AdopterMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Adopter" >
+    <id column="adopter_id" property="adopterId" jdbcType="INTEGER" />
+    <result column="animal_id" property="animalId" jdbcType="INTEGER" />
+    <result column="adopter_name" property="adopterName" jdbcType="VARCHAR" />
+    <result column="adopter_tele" property="adopterTele" jdbcType="VARCHAR" />
+    <result column="adopter_email" property="adopterEmail" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    adopter_id, animal_id, adopter_name, adopter_tele, adopter_email, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_adopter
+    where adopter_id = #{adopterId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_adopter
+    where adopter_id = #{adopterId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Adopter" >
+    insert into t_adopter (adopter_id, animal_id, adopter_name, 
+      adopter_tele, adopter_email, remark
+      )
+    values (#{adopterId,jdbcType=INTEGER}, #{animalId,jdbcType=INTEGER}, #{adopterName,jdbcType=VARCHAR}, 
+      #{adopterTele,jdbcType=VARCHAR}, #{adopterEmail,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Adopter" >
+    insert into t_adopter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adopterId != null" >
+        adopter_id,
+      </if>
+      <if test="animalId != null" >
+        animal_id,
+      </if>
+      <if test="adopterName != null" >
+        adopter_name,
+      </if>
+      <if test="adopterTele != null" >
+        adopter_tele,
+      </if>
+      <if test="adopterEmail != null" >
+        adopter_email,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adopterId != null" >
+        #{adopterId,jdbcType=INTEGER},
+      </if>
+      <if test="animalId != null" >
+        #{animalId,jdbcType=INTEGER},
+      </if>
+      <if test="adopterName != null" >
+        #{adopterName,jdbcType=VARCHAR},
+      </if>
+      <if test="adopterTele != null" >
+        #{adopterTele,jdbcType=VARCHAR},
+      </if>
+      <if test="adopterEmail != null" >
+        #{adopterEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Adopter" >
+    update t_adopter
+    <set >
+      <if test="animalId != null" >
+        animal_id = #{animalId,jdbcType=INTEGER},
+      </if>
+      <if test="adopterName != null" >
+        adopter_name = #{adopterName,jdbcType=VARCHAR},
+      </if>
+      <if test="adopterTele != null" >
+        adopter_tele = #{adopterTele,jdbcType=VARCHAR},
+      </if>
+      <if test="adopterEmail != null" >
+        adopter_email = #{adopterEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where adopter_id = #{adopterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Adopter" >
+    update t_adopter
+    set animal_id = #{animalId,jdbcType=INTEGER},
+      adopter_name = #{adopterName,jdbcType=VARCHAR},
+      adopter_tele = #{adopterTele,jdbcType=VARCHAR},
+      adopter_email = #{adopterEmail,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where adopter_id = #{adopterId,jdbcType=INTEGER}
+  </update>
+</mapper>
